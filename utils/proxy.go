@@ -3,6 +3,7 @@ package utils
 import (
 	"go.uber.org/zap"
 	"strings"
+	"net/url"
 	"sub2clash/logger"
 	"sub2clash/model"
 	"sub2clash/parser"
@@ -104,9 +105,19 @@ func AddProxy(
 	}
 }
 
+func URLDecode(proxy string) (string, error) {
+	decodedURL, err := url.QueryUnescape(proxy)
+	if err != nil {
+		return "", err
+	}
+	return decodedURL, nil
+}
+
 func ParseProxy(proxies ...string) []model.Proxy {
 	var result []model.Proxy
 	for _, proxy := range proxies {
+		// check whether the proxy is URL-encoded
+		proxy, _ = URLDecode(proxy)
 		if proxy != "" {
 			var proxyItem model.Proxy
 			var err error
