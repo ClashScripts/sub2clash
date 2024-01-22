@@ -5,3 +5,5 @@ test
 logs
 sub2clash.db
 .env
+.vscode
+__debug_bin*
